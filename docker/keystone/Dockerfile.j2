@@ -1,0 +1,37 @@
+FROM {{ namespace }}/openstack-base:{{ tag }}
+MAINTAINER {{ maintainer }}
+
+#mysql-client only for provisioning need to be removed later
+RUN apt-get install -y --no-install-recommends \
+        apache2 \
+        libapache2-mod-wsgi \
+        mysql-client \
+    && echo > /etc/apache2/ports.conf \
+    && apt-get clean
+
+
+RUN curl -o keystone-{{ branch }}.tar.gz http://tarballs.openstack.org/keystone/keystone-{{ branch }}.tar.gz \
+    && tar -zxvf keystone-{{ branch }}.tar.gz
+
+RUN mv keystone*/ keystone-{{ branch }}/ \
+    &&  ln -s keystone-{{ branch }} /keystone \
+    && useradd --user-group keystone \
+    && /var/lib/microservices/venv/bin/pip --no-cache-dir install --upgrade -c /keystone/requirements.txt /keystone \
+    && mkdir -p /etc/keystone /var/www/cgi-bin/keystone /var/log/apache2 /home/keystone \
+    && cp -r /keystone/etc/* /etc/keystone/ \
+    && cp /keystone/httpd/keystone.py /var/www/cgi-bin/keystone/admin \
+    && cp /keystone/httpd/keystone.py /var/www/cgi-bin/keystone/main \
+    && chown -R keystone: /etc/keystone /var/www/cgi-bin/keystone /var/log/apache2 /home/keystone
+
+RUN chown -R keystone: /var/www/cgi-bin/keystone \
+    && chmod 755 /var/www/cgi-bin/keystone/*
+
+
+COPY keystone.conf /etc/keystone/keystone.conf
+
+COPY wsgi-keystone.conf /etc/apache2/conf-enabled/wsgi-keystone.conf
+
+COPY bootstrap.sh /usr/local/bin/bootstrap.sh
+RUN chmod 755 /usr/local/bin/bootstrap.sh
+
+CMD ["bootstrap.sh"]

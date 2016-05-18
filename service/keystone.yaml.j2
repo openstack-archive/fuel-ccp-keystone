@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: keystone
+  labels:
+    app: keystone
+spec:
+  containers:
+    - name: keystone
+      image: {{ namespace }}/keystone:{{ tag }}
+      env:
+        - name: DB_HOST
+          value: openstack-mysql.default.svc.cluster.local
+        - name: ROOT_DB_PASS
+          value: password
+        - name: KEYSTONE_USER
+          value: keystone
+        - name: KEYSTONE_PASS
+          value: password
+        - name: KEYSTONE_DB
+          value: keystone
+      imagePullPolicy: Always
+      ports:
+        - containerPort: 5000
+          hostPort: 5000
+        - containerPort: 35357
+          hostPort: 35357

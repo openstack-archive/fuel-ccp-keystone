@@ -1,0 +1,30 @@
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "keystone-service"
+    },
+    "spec": {
+        "selector": {
+          "app": "keystone"
+        },
+        "ports": [
+            {
+                "name": "admin",
+                "protocol": "TCP",
+                "port": 5000,
+                "targetPort": 5000,
+                "nodePort": 30500
+            },
+            {
+                "name": "public",
+                "protocol": "TCP",
+                "port": 35357,
+                "targetPort": 35357,
+                "nodePort": 30357
+            }
+        ],
+        "type": "NodePort"
+    }
+}
+

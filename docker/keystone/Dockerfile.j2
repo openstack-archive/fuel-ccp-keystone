@@ -2,10 +2,12 @@ FROM {{ namespace }}/openstack-base:{{ tag }}
 MAINTAINER {{ maintainer }}
 
 #mysql-client only for provisioning need to be removed later
+#netcat is for mysql alive test
 RUN apt-get install -y --no-install-recommends \
         apache2 \
         libapache2-mod-wsgi \
         mysql-client \
+        netcat \
     && echo > /etc/apache2/ports.conf \
     && apt-get clean
 

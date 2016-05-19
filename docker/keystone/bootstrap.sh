@@ -7,7 +7,7 @@ sed -i "s/keystone_pass/${KEYSTONE_PASS}/g" /etc/keystone/keystone.conf
 sed -i "s/keystone_addr/${DB_HOST}/g" /etc/keystone/keystone.conf
 sed -i "s/keystone_db/${KEYSTONE_DB}/g" /etc/keystone/keystone.conf
 
-ping -c 1 ${DB_HOST}
+nc -z -v -w5 ${DB_HOST} 3306
 if [ $? -ne 0 ]
 then
     exit 1

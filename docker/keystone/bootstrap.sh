@@ -17,8 +17,8 @@ fi
 controller=`hostname -i`
 
 # bootstrap db
-mysql -u root -p${ROOT_DB_PASS} -h ${DB_HOST} -e 'create database keystone'
-mysql -u root -p${ROOT_DB_PASS} -h ${DB_HOST} -e "grant all privileges on keystone.* to '${KEYSTONE_USER}'@'%' identified by '${KEYSTONE_PASS}';"
+mysql -u root -p${ROOT_DB_PASS} -h ${DB_HOST} -e "create database ${KEYSTONE_DB}"
+mysql -u root -p${ROOT_DB_PASS} -h ${DB_HOST} -e "grant all privileges on ${KEYSTONE_DB}.* to '${KEYSTONE_USER}'@'%' identified by '${KEYSTONE_PASS}';"
 
 keystone-manage db_sync
 

@@ -13,15 +13,17 @@ then
     exit 1
 fi
 
-
 controller=`hostname -i`
 
 # bootstrap db
+echo "Creating database for keystone"
 mysql -u root -p${ROOT_DB_PASS} -h ${DB_HOST} -e "create database ${KEYSTONE_DB}"
 mysql -u root -p${ROOT_DB_PASS} -h ${DB_HOST} -e "grant all privileges on ${KEYSTONE_DB}.* to '${KEYSTONE_USER}'@'%' identified by '${KEYSTONE_PASS}';"
 
+echo "Keystone db_sync"
 keystone-manage db_sync
 
+echo "Keystone bootstrap"
 keystone-manage bootstrap --bootstrap-password ${KEYSTONE_PASS}
 
 /usr/sbin/apachectl start
@@ -34,6 +36,7 @@ id=`openstack service list | awk '/ identity / {print $2}' | wc -l`
 
 if [ "$id" -eq "0" ]
 then
+    echo 'Keystone users\endoint creation'
     openstack service create --name keystone --description "OpenStack Identity" identity
 
     openstack endpoint create --region RegionOne \
@@ -49,4 +52,5 @@ fi
 
 sleep 5
 
+echo "Keystone apache process start"
 /usr/sbin/apache2ctl -D FOREGROUND

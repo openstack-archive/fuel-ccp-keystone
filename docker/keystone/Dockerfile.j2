@@ -7,7 +7,6 @@ RUN apt-get install -y --no-install-recommends \
         apache2 \
         libapache2-mod-wsgi \
         mysql-client \
-        netcat \
     && echo > /etc/apache2/ports.conf \
     && apt-get clean
 

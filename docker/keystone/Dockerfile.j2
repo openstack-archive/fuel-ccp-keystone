@@ -27,12 +27,5 @@ RUN mv keystone*/ keystone-{{ branch }}/ \
 RUN chown -R keystone: /var/www/cgi-bin/keystone \
     && chmod 755 /var/www/cgi-bin/keystone/*
 
-
-COPY keystone.conf /etc/keystone/keystone.conf
-
-COPY wsgi-keystone.conf /etc/apache2/conf-enabled/wsgi-keystone.conf
-
-COPY bootstrap.sh /usr/local/bin/bootstrap.sh
-RUN chmod 755 /usr/local/bin/bootstrap.sh
-
-CMD ["bootstrap.sh"]
+COPY daemon.sh /usr/local/bin/daemon.sh
+RUN chmod 755 /usr/local/bin/daemon.sh

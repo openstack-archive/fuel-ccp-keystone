@@ -1,36 +1,36 @@
 service:
-    name: keystone
-    ports:
-        - keystone_public_port
-        - keystone_admin_port
-    container:
-        node-selector:
-            openstack-controller: "true"
-    probes:
+  name: keystone
+  ports:
+    - keystone_public_port
+    - keystone_admin_port
+  node-selector:
+    openstack-controller: "true"
+  containers:
+    - name: keystone
+      image: keystone
+      probes:
         readiness: "true"
         liveness: "true"
-    pre:
+      pre:
         - name: keystone-db-create
           dependencies:
-              - mariadb
+            - mariadb
           type: single
           command:
-              mysql -u root -p{{ db_root_password }} -h mariadb -e "create database {{ keystone_db_name }};
-              grant all privileges on {{ keystone_db_name }}.* to '{{ keystone_db_username }}'@'%' identified by '{{ keystone_db_password }}'"
-
+            mysql -u root -p{{ db_root_password }} -h mariadb -e "create database {{ keystone_db_name }};
+            grant all privileges on {{ keystone_db_name }}.* to '{{ keystone_db_username }}'@'%' identified by '{{ keystone_db_password }}'"
         - name: keystone-db-sync
           files:
-              - keystone-conf
+            - keystone-conf
           dependencies:
-              - keystone-db-create
+            - keystone-db-create
           type: single
           command: keystone-manage db_sync
-
         - name: keystone-db-bootstrap
           files:
-              - keystone-conf
+            - keystone-conf
           dependencies:
-              - keystone-db-sync
+            - keystone-db-sync
           type: single
           command: keystone-manage bootstrap
                    --bootstrap-password {{ openstack_user_password }}
@@ -41,25 +41,27 @@ service:
                    --bootstrap-admin-url http://keystone:{{ keystone_admin_port }}
                    --bootstrap-public-url http://keystone:{{ keystone_public_port }}
                    --bootstrap-internal-url http://keystone:{{ keystone_public_port }}
-    daemon:
+
+      daemon:
         files:
-            - keystone-conf
-            - wsgi-keystone-conf
+          - keystone-conf
+          - wsgi-keystone-conf
         command: daemon.sh
-    post:
+      post:
         - name: keystone-create-project
           files:
-              - create-project.sh
+            - create-project.sh
           type: single
           command: /tmp/create-project.sh
+
 files:
-    keystone-conf:
-        path: /etc/keystone/keystone.conf
-        content: keystone.conf.j2
-    wsgi-keystone-conf:
-        path: /etc/apache2/conf-enabled/wsgi-keystone.conf
-        content: wsgi-keystone.conf.j2
-    create-project.sh:
-        path: /tmp/create-project.sh
-        content: create-project.sh.j2
-        perm: "0755"
+  keystone-conf:
+    path: /etc/keystone/keystone.conf
+    content: keystone.conf.j2
+  wsgi-keystone-conf:
+    path: /etc/apache2/conf-enabled/wsgi-keystone.conf
+    content: wsgi-keystone.conf.j2
+  create-project.sh:
+    path: /tmp/create-project.sh
+    content: create-project.sh.j2
+    perm: "0755"

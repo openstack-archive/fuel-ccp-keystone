@@ -6,7 +6,7 @@ configs:
     keystone_db_name: keystone
     keystone_db_username: keystone
 
-    openstack_user_name: admin
     openstack_user_password: password
+    openstack_user_name: admin
     openstack_project_name: admin
     openstack_role_name: admin

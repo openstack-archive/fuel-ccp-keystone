@@ -3,6 +3,9 @@ service:
     ports:
         - keystone_public_port
         - keystone_admin_port
+    container:
+        node-selector:
+            openstack-controller: "true"
     probes:
         readiness: "true"
         liveness: "true"

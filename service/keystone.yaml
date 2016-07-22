@@ -1,8 +1,9 @@
 service:
   name: keystone
   ports:
-    - keystone_public_port
-    - keystone_admin_port
+    - port: keystone_public_port
+      ingress: keystone_external_path
+    - port: keystone_admin_port
   node-selector:
     openstack-controller: "true"
   containers:
@@ -39,7 +40,7 @@ service:
                    --bootstrap-role-name {{ openstack_role_name }}
                    --bootstrap-service-name keystone --bootstrap-region-id RegionOne
                    --bootstrap-admin-url http://keystone:{{ keystone_admin_port }}
-                   --bootstrap-public-url http://keystone:{{ keystone_public_port }}
+                   --bootstrap-public-url {{ 'http://'~ingress_domain~':'~ingress_port~keystone_external_path if use_ingress else 'http://keystone:'~ keystone_public_port }}
                    --bootstrap-internal-url http://keystone:{{ keystone_public_port }}
 
       daemon:

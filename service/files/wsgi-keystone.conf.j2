@@ -4,6 +4,9 @@ Listen {{ keystone_admin_port }}
 <VirtualHost *:{{ keystone_public_port }}>
     WSGIDaemonProcess keystone-public processes=5 threads=1 user=keystone group=keystone display-name=%{GROUP} python-path=/var/lib/microservices/venv/lib/python2.7/site-packages
     WSGIProcessGroup keystone-public
+    {% if use_ingress -%}
+    WSGIScriptAlias {{ keystone_external_path }} /var/www/cgi-bin/keystone/main
+    {%- endif %}
     WSGIScriptAlias / /var/www/cgi-bin/keystone/main
     WSGIApplicationGroup %{GLOBAL}
     WSGIPassAuthorization On

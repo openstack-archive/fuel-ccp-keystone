@@ -10,3 +10,5 @@ configs:
     openstack_user_name: admin
     openstack_project_name: admin
     openstack_role_name: admin
+
+    keystone_external_path: /identity

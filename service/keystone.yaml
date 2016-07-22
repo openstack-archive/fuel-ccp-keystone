@@ -49,10 +49,8 @@ service:
         command: daemon.sh
       post:
         - name: keystone-create-project
-          files:
-            - create-project.sh
           type: single
-          command: /opt/ccp/bin/create-project.sh
+          command: openstack project create service
 
 files:
   keystone-conf:
@@ -61,7 +59,3 @@ files:
   wsgi-keystone-conf:
     path: /etc/apache2/conf-enabled/wsgi-keystone.conf
     content: wsgi-keystone.conf.j2
-  create-project.sh:
-    path: /opt/ccp/bin/create-project.sh
-    content: create-project.sh.j2
-    perm: "0755"

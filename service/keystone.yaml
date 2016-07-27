@@ -3,8 +3,6 @@ service:
   ports:
     - keystone_public_port
     - keystone_admin_port
-  node-selector:
-    openstack-controller: "true"
   containers:
     - name: keystone
       image: keystone

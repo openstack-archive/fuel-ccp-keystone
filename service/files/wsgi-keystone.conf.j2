@@ -1,8 +1,9 @@
+{% set venv_path = '/var/lib/microservices/venv/lib/python2.7/site-packages' %}
 Listen {{ keystone_public_port }}
 Listen {{ keystone_admin_port }}
 
 <VirtualHost *:{{ keystone_public_port }}>
-    WSGIDaemonProcess keystone-public processes=5 threads=1 user=keystone group=keystone display-name=%{GROUP} python-path=/var/lib/microservices/venv/lib/python2.7/site-packages
+    WSGIDaemonProcess keystone-public processes=5 threads=1 user=keystone group=keystone display-name=%{GROUP} python-path={{ venv_path }}
     WSGIProcessGroup keystone-public
     WSGIScriptAlias / /var/www/cgi-bin/keystone/main
     WSGIApplicationGroup %{GLOBAL}
@@ -10,15 +11,16 @@ Listen {{ keystone_admin_port }}
     <IfVersion >= 2.4>
       ErrorLogFormat "%M"
     </IfVersion>
+    LogFormat "%{X-Forwarded-For}i %l %u %t \"%r\" %>s %b %D \"%{Referer}i\" \"%{User-Agent}i\"" access
     # w00t? Well, we want keystone to log to stdout, for heka stuff, so docker logs could see it, for example.
     # In docker env only the pid 1 stdout\err logs are passing to docker, so we need this hack,
-    # since the pid 1 in this case is a bash, running bootstrap.sh. FIXME in future.
+    # since the pid 1 in this case is a dumb init. FIXME in future.
     ErrorLog /proc/1/fd/2
-    CustomLog "/var/log/apache2/keystone-access.log" combined
+    CustomLog "{{ keystone_log_base }}/keystone-access.log" access
 </VirtualHost>
 
 <VirtualHost *:{{ keystone_admin_port }}>
-    WSGIDaemonProcess keystone-admin processes=5 threads=1 user=keystone group=keystone display-name=%{GROUP} python-path=/var/lib/microservices/venv/lib/python2.7/site-packages
+    WSGIDaemonProcess keystone-admin processes=5 threads=1 user=keystone group=keystone display-name=%{GROUP} python-path={{ venv_path }}
     WSGIProcessGroup keystone-admin
     WSGIScriptAlias / /var/www/cgi-bin/keystone/admin
     WSGIApplicationGroup %{GLOBAL}
@@ -26,7 +28,8 @@ Listen {{ keystone_admin_port }}
     <IfVersion >= 2.4>
       ErrorLogFormat "%M"
     </IfVersion>
+    LogFormat "%{X-Forwarded-For}i %l %u %t \"%r\" %>s %b %D \"%{Referer}i\" \"%{User-Agent}i\"" access
     # Check the comment above.
     ErrorLog /proc/1/fd/2
-    CustomLog "/var/log/apache2/keystone-access.log" combined
+    CustomLog "{{ keystone_log_base }}/keystone-access.log" access
 </VirtualHost>

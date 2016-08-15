@@ -9,7 +9,14 @@ service:
       probes:
         readiness: "true"
         liveness: "true"
+      volumes:
+      - name: keystone-logs
+        path: "{{ keystone_log_base }}"
+        type: host
+        readOnly: False
       pre:
+        - name: chown-logs-dir
+          command: "sudo /bin/chown keystone:keystone {{ keystone_log_base }}"
         - name: keystone-db-create
           dependencies:
             - mariadb

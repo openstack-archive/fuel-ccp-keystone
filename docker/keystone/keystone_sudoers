@@ -1,0 +1,1 @@
+%microservices ALL=(root) NOPASSWD: /bin/chown keystone\:keystone /var/log/ccp/keystone

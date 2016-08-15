@@ -12,3 +12,4 @@ configs:
     openstack_role_name: admin
 
     keystone_debug: false
+    keystone_log_base: "/var/log/ccp/keystone"

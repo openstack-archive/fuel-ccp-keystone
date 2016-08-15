@@ -28,4 +28,6 @@ RUN chown -R keystone: /var/www/cgi-bin/keystone \
     && chmod 755 /var/www/cgi-bin/keystone/*
 
 COPY daemon.sh /usr/local/bin/daemon.sh
-RUN chmod 755 /usr/local/bin/daemon.sh
+COPY keystone_sudoers /etc/sudoers.d/keystone_sudoers
+RUN chmod 755 /usr/local/bin/daemon.sh \
+    && chmod 440 /etc/sudoers.d/keystone_sudoers

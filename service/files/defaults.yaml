@@ -12,3 +12,8 @@ configs:
     openstack_role_name: admin
 
     keystone_debug: false
+
+sources:
+  openstack/keystone:
+    git_url: https://github.com/openstack/keystone.git
+    git_ref: master

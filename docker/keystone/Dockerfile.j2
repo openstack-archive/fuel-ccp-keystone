@@ -10,13 +10,9 @@ RUN apt-get install -y --no-install-recommends \
     && echo > /etc/apache2/ports.conf \
     && apt-get clean
 
+{{ get_repository("openstack/keystone", "/keystone") }}
 
-RUN curl -o keystone-{{ branch }}.tar.gz http://tarballs.openstack.org/keystone/keystone-{{ branch }}.tar.gz \
-    && tar -zxvf keystone-{{ branch }}.tar.gz
-
-RUN mv keystone*/ keystone-{{ branch }}/ \
-    &&  ln -s keystone-{{ branch }} /keystone \
-    && useradd --user-group keystone \
+RUN useradd --user-group keystone \
     && /var/lib/microservices/venv/bin/pip --no-cache-dir install --upgrade -c /keystone/requirements.txt /keystone \
     && mkdir -p /etc/keystone /var/www/cgi-bin/keystone /var/log/apache2 /home/keystone \
     && cp -r /keystone/etc/* /etc/keystone/ \

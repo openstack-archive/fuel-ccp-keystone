@@ -1,14 +1,19 @@
 configs:
-    keystone_public_port: 5000
-    keystone_admin_port: 35357
+  keystone_public_port: 5000
+  keystone_admin_port: 35357
 
-    keystone_db_password: password
-    keystone_db_name: keystone
-    keystone_db_username: keystone
+  keystone_db_password: password
+  keystone_db_name: keystone
+  keystone_db_username: keystone
 
-    openstack_user_password: password
-    openstack_user_name: admin
-    openstack_project_name: admin
-    openstack_role_name: admin
+  openstack_user_password: password
+  openstack_user_name: admin
+  openstack_project_name: admin
+  openstack_role_name: admin
 
-    keystone_debug: false
+  keystone_debug: false
+
+sources:
+  openstack/keystone:
+    git_url: https://github.com/openstack/keystone.git
+    git_ref: master

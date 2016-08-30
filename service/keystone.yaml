@@ -48,6 +48,8 @@ service:
                    --bootstrap-internal-url http://keystone:{{ keystone_public_port }}
 
       daemon:
+        dependencies:
+          - memcached
         files:
           - keystone-conf
           - wsgi-keystone-conf

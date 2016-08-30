@@ -6,3 +6,9 @@ use_stderr = True
 
 [database]
 connection = mysql+pymysql://{{ keystone_db_username }}:{{ keystone_db_password }}@mariadb/{{ keystone_db_name }}
+
+[cache]
+enabled = True
+backend = oslo_cache.memcache_pool
+memcached_servers = memcached:{{ memcached_port }}
+

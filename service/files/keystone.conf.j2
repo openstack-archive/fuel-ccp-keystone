@@ -1,8 +1,17 @@
 [DEFAULT]
-debug = False
+debug = {{ keystone_debug }}
 use_syslog = False
 #syslog_log_facility=LOG_LOCAL0
 use_stderr = True
 
 [database]
-connection = mysql+pymysql://{{ keystone_db_username }}:{{ keystone_db_password }}@mariadb/{{ keystone_db_name }}
+connection = mysql+pymysql://{{ keystone_db_username }}:{{
+keystone_db_password }}@mariadb/{{ keystone_db_name }}
+
+[cache]
+enabled = True
+backend = oslo_cache.memcache_pool
+
+[memcache]
+servers = memcached:{{ memcached_port }}
+

@@ -3,7 +3,7 @@ Listen {{ keystone_public_port }}
 Listen {{ keystone_admin_port }}
 
 <VirtualHost *:{{ keystone_public_port }}>
-    WSGIDaemonProcess keystone-public processes=5 threads=1 user=keystone group=keystone display-name=%{GROUP} python-path={{ venv_path }}
+    WSGIDaemonProcess keystone-public processes={{ keystone_wsgi_processes }} threads={{ keystone_wsgi_threads }} user=keystone group=keystone display-name=%{GROUP} python-path={{ venv_path }}
     WSGIProcessGroup keystone-public
     WSGIScriptAlias / /var/www/cgi-bin/keystone/main
     WSGIApplicationGroup %{GLOBAL}

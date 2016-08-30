@@ -39,6 +39,11 @@ service:
                    --bootstrap-admin-url http://keystone:{{ keystone_admin_port }}
                    --bootstrap-public-url http://keystone:{{ keystone_public_port }}
                    --bootstrap-internal-url http://keystone:{{ keystone_public_port }}
+        - name: keystone-fernet-setup
+          files:
+            - keystone-conf
+          type: single
+          command: keystone-manage fernet_setup
 
       daemon:
         files:

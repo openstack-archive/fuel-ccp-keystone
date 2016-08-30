@@ -12,3 +12,6 @@ enabled = True
 backend = oslo_cache.memcache_pool
 memcached_servers = memcached:{{ memcached_port }}
 
+[token]
+provider = fernet
+

@@ -1,7 +1,6 @@
 [DEFAULT]
 debug = {{ keystone_debug }}
 use_syslog = False
-#syslog_log_facility=LOG_LOCAL0
 use_stderr = True
 
 [database]
@@ -16,3 +15,18 @@ max_overflow = 60
 enabled = True
 backend = oslo_cache.memcache_pool
 memcache_servers = memcached:{{ memcached_port }}
+memcache_dead_retry = 60
+memcache_socket_timeout = 1
+memcache_pool_maxsize = 1000
+memcache_pool_unused_timeout = 60
+
+[token]
+provider = keystone.token.providers.uuid.Provider
+driver = keystone.token.persistence.backends.memcache_pool.Token
+
+[memcache]
+servers = memcached:{{ memcached_port }}
+dead_retry = 60
+socket_timeout = 2
+pool_maxsize = 1000
+pool_unused_timeout = 60

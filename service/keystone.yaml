@@ -43,9 +43,9 @@ service:
                    --bootstrap-project-name {{ openstack_project_name }}
                    --bootstrap-role-name {{ openstack_role_name }}
                    --bootstrap-service-name keystone --bootstrap-region-id RegionOne
-                   --bootstrap-admin-url http://keystone:{{ keystone_admin_port }}
-                   --bootstrap-public-url http://keystone:{{ keystone_public_port }}
-                   --bootstrap-internal-url http://keystone:{{ keystone_public_port }}
+                   --bootstrap-admin-url http://keystone.{{ namespace }}:{{ keystone_admin_port }}
+                   --bootstrap-public-url http://keystone.{{ namespace }}:{{ keystone_public_port }}
+                   --bootstrap-internal-url http://keystone.{{ namespace }}:{{ keystone_public_port }}
 
       daemon:
         dependencies:

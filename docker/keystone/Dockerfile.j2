@@ -16,12 +16,9 @@ RUN useradd --user-group keystone \
     && /var/lib/microservices/venv/bin/pip --no-cache-dir install --upgrade -c /keystone/requirements.txt /keystone \
     && mkdir -p /etc/keystone /var/www/cgi-bin/keystone /var/log/apache2 /home/keystone \
     && cp -r /keystone/etc/* /etc/keystone/ \
-    && cp /keystone/httpd/keystone.py /var/www/cgi-bin/keystone/admin \
-    && cp /keystone/httpd/keystone.py /var/www/cgi-bin/keystone/main \
+    && cp /var/lib/microservices/venv/bin/keystone-wsgi-admin /var/www/cgi-bin/keystone/admin \
+    && cp /var/lib/microservices/venv/bin/keystone-wsgi-public /var/www/cgi-bin/keystone/public \
     && chown -R keystone: /etc/keystone /var/www/cgi-bin/keystone /var/log/apache2 /home/keystone
-
-RUN chown -R keystone: /var/www/cgi-bin/keystone \
-    && chmod 755 /var/www/cgi-bin/keystone/*
 
 COPY daemon.sh /usr/local/bin/daemon.sh
 COPY keystone_sudoers /etc/sudoers.d/keystone_sudoers

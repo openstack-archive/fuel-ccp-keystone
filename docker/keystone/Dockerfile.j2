@@ -14,14 +14,9 @@ RUN apt-get install -y --no-install-recommends \
 
 RUN useradd --user-group keystone \
     && /var/lib/microservices/venv/bin/pip --no-cache-dir install --upgrade -c /keystone/requirements.txt /keystone \
-    && mkdir -p /etc/keystone /var/www/cgi-bin/keystone /var/log/apache2 /home/keystone \
+    && mkdir -p /etc/keystone /var/log/apache2 /home/keystone \
     && cp -r /keystone/etc/* /etc/keystone/ \
-    && cp /keystone/httpd/keystone.py /var/www/cgi-bin/keystone/admin \
-    && cp /keystone/httpd/keystone.py /var/www/cgi-bin/keystone/main \
-    && chown -R keystone: /etc/keystone /var/www/cgi-bin/keystone /var/log/apache2 /home/keystone
-
-RUN chown -R keystone: /var/www/cgi-bin/keystone \
-    && chmod 755 /var/www/cgi-bin/keystone/*
+    && chown -R keystone: /etc/keystone  /var/log/apache2 /home/keystone
 
 COPY daemon.sh /usr/local/bin/daemon.sh
 COPY keystone_sudoers /etc/sudoers.d/keystone_sudoers

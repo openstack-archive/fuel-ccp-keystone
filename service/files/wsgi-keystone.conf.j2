@@ -5,7 +5,7 @@ Listen {{ keystone_admin_port }}
 <VirtualHost *:{{ keystone_public_port }}>
     WSGIDaemonProcess keystone-public processes={{ keystone_wsgi_processes }} threads={{ keystone_wsgi_threads }} user=keystone group=keystone display-name=%{GROUP} python-path={{ venv_path }}
     WSGIProcessGroup keystone-public
-    WSGIScriptAlias / /var/www/cgi-bin/keystone/main
+    WSGIScriptAlias / /var/lib/microservices/venv/bin/keystone-wsgi-public
     WSGIApplicationGroup %{GLOBAL}
     WSGIPassAuthorization On
     ErrorLogFormat "%M"
@@ -20,7 +20,7 @@ Listen {{ keystone_admin_port }}
 <VirtualHost *:{{ keystone_admin_port }}>
     WSGIDaemonProcess keystone-admin processes=5 threads=1 user=keystone group=keystone display-name=%{GROUP} python-path={{ venv_path }}
     WSGIProcessGroup keystone-admin
-    WSGIScriptAlias / /var/www/cgi-bin/keystone/admin
+    WSGIScriptAlias / /var/lib/microservices/venv/bin/keystone-wsgi-admin
     WSGIApplicationGroup %{GLOBAL}
     WSGIPassAuthorization On
     ErrorLogFormat "%M"

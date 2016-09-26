@@ -16,6 +16,12 @@ configs:
   keystone_wsgi_processes: 6
   keystone_wsgi_threads: 3
 
+  keystone_fernet_keys:
+    # 100% random defaults
+    staged: "ZAabsQIXsSW7Ez52UZRqUXDz87y9+R+mbxVZ38gRmjg="
+    primary: "JzpGSM8eNrjueBZF0G2OYSPWqdPGNSQrYr3NuTFDKQg="
+    secondary: "8ALFeK6PARqTpdwTk6kvySk20VTZIGWPJVpuvaJ11ms="
+
 sources:
   openstack/keystone:
     git_url: https://github.com/openstack/keystone.git

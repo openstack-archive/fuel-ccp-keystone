@@ -17,12 +17,4 @@ memcache_socket_timeout = 2
 memcache_pool_maxsize = 30
 
 [token]
-provider = uuid
-driver = memcache_pool
-caching = False
-
-[memcache]
-servers = memcached:{{ memcached_port }}
-dead_retry = 60
-socket_timeout = 2
-pool_maxsize = 30
+provider = fernet

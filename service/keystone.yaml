@@ -53,6 +53,9 @@ service:
         files:
           - keystone-conf
           - wsgi-keystone-conf
+          - fernet-key-staged
+          - fernet-key-primary
+          - fernet-key-secondary
         command: daemon.sh
       post:
         - name: keystone-create-project
@@ -69,3 +72,12 @@ files:
   wsgi-keystone-conf:
     path: /etc/apache2/conf-enabled/wsgi-keystone.conf
     content: wsgi-keystone.conf.j2
+  fernet-key-staged:
+    path: /etc/keystone/fernet-keys/0
+    content: fernet-key-staged.j2
+  fernet-key-primary:
+    path: /etc/keystone/fernet-keys/2
+    content: fernet-key-primary.j2
+  fernet-key-secondary:
+    path: /etc/keystone/fernet-keys/1
+    content: fernet-key-secondary.j2

@@ -1,10 +1,10 @@
 [DEFAULT]
-debug = {{ keystone_debug }}
+debug = {{ keystone.debug }}
 use_syslog = False
 use_stderr = True
 
 [database]
-connection = mysql+pymysql://{{ keystone_db_username }}:{{ keystone_db_password }}@mariadb/{{ keystone_db_name }}
+connection = mysql+pymysql://{{ keystone.db.username }}:{{ keystone.db.password }}@mariadb/{{ keystone.db.name }}
 max_retries = -1
 max_overflow = 60
 

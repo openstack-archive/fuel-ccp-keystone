@@ -22,7 +22,7 @@ service:
             - mariadb
           type: single
           command:
-            mysql -u root -p{{ db_root_password }} -h mariadb -e "create database {{ keystone_db_name }};
+            mysql -u root -p{{ db_root_password }} -h {{ address('mariadb') }} -e "create database {{ keystone_db_name }};
             grant all privileges on {{ keystone_db_name }}.* to '{{ keystone_db_username }}'@'%' identified by '{{ keystone_db_password }}'"
         - name: keystone-db-sync
           files:

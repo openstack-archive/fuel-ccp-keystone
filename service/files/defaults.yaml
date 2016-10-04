@@ -11,7 +11,7 @@ configs:
 
     wsgi:
       processes: 6
-      threads: 3
+      threads: 1
 
   openstack:
     user_password: password

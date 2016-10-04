@@ -1,20 +1,23 @@
 configs:
-  keystone_public_port: 5000
-  keystone_admin_port: 35357
+  keystone:
+    debug: false
+    public_port: 5000
+    admin_port: 35357
 
-  keystone_db_password: password
-  keystone_db_name: keystone
-  keystone_db_username: keystone
+    db:
+      password: password
+      name: keystone
+      username: keystone
 
-  openstack_user_password: password
-  openstack_user_name: admin
-  openstack_project_name: admin
-  openstack_role_name: admin
+    wsgi:
+      processes: 6
+      threads: 3
 
-  keystone_debug: false
-
-  keystone_wsgi_processes: 6
-  keystone_wsgi_threads: 3
+  openstack:
+    user_password: password
+    user_name: admin
+    project_name: admin
+    role_name: admin
 
   # 100% random default
   keystone_fernet_key: "ZAabsQIXsSW7Ez52UZRqUXDz87y9+R+mbxVZ38gRmjg="

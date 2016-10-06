@@ -13,14 +13,14 @@ configs:
       processes: 6
       threads: 3
 
+    # 100% random default
+    fernet_key: "ZAabsQIXsSW7Ez52UZRqUXDz87y9+R+mbxVZ38gRmjg="
+
   openstack:
     user_password: password
     user_name: admin
     project_name: admin
     role_name: admin
-
-  # 100% random default
-  keystone_fernet_key: "ZAabsQIXsSW7Ez52UZRqUXDz87y9+R+mbxVZ38gRmjg="
 
 sources:
   openstack/keystone:

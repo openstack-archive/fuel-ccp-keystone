@@ -16,6 +16,12 @@ configs:
     # 100% random default
     fernet_key: "ZAabsQIXsSW7Ez52UZRqUXDz87y9+R+mbxVZ38gRmjg="
 
+    swift:
+      enable: false
+      radosgw:
+        host: "Changeme"
+        port: "Changeme"
+
   openstack:
     user_password: password
     user_name: admin

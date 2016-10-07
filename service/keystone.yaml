@@ -62,6 +62,23 @@ service:
         - name: keystone-create-role-member
           type: single
           command: openstack role create _member_
+        # {% if swift.keystone_enable %}
+        - name: keystone-create-swift-service
+          type: single
+          command: openstack service create --name swift --description "Swift Service" object-store
+        - name: keystone-create-swift-public-endpoint
+          type: single
+          command: openstack endpoint create --region RegionOne swift public
+                   "http://{{ swift.radosgw_host }}:{{ swift.radosgw_port }}/swift/v1"
+        - name: keystone-create-swift-admin-endpoint
+          type: single
+          command: openstack endpoint create --region RegionOne swift admin
+                   "http://{{ swift.radosgw_host }}:{{ swift.radosgw_port }}/swift/v1"
+        - name: keystone-create-swift-internal-endpoint
+          type: single
+          command: openstack endpoint create --region RegionOne swift internal
+                   "http://{{ swift.radosgw_host }}:{{ swift.radosgw_port }}/swift/v1"
+        # {% endif %}
 
 files:
   keystone-conf:

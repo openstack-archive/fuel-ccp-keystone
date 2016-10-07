@@ -19,6 +19,11 @@ configs:
     project_name: admin
     role_name: admin
 
+  swift:
+    keystone_enable: false
+    radosgw_host: "Changeme"
+    radosgw_port: "Changeme"
+
   # 100% random default
   keystone_fernet_key: "ZAabsQIXsSW7Ez52UZRqUXDz87y9+R+mbxVZ38gRmjg="
 

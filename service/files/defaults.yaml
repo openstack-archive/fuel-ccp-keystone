@@ -3,6 +3,7 @@ configs:
     debug: false
     public_port: 5000
     admin_port: 35357
+    ingress_name: identity
 
     db:
       password: password

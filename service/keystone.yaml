@@ -1,8 +1,9 @@
 service:
   name: keystone
   ports:
-    - {{ keystone.public_port }}
-    - {{ keystone.admin_port }}
+    - cont: {{ keystone.public_port }}
+      ingress_name: {{ keystone.ingress_name }}
+    - cont: {{ keystone.admin_port }}
   containers:
     - name: keystone
       image: keystone
@@ -44,7 +45,7 @@ service:
                    --bootstrap-role-name {{ openstack.role_name }}
                    --bootstrap-service-name keystone --bootstrap-region-id RegionOne
                    --bootstrap-admin-url http://{{ address('keystone') }}:{{ keystone.admin_port }}
-                   --bootstrap-public-url http://{{ address('keystone') }}:{{ keystone.public_port }}
+                   --bootstrap-public-url http://{{ keystone.ingress_name }}.ccp.{{ ingress_domain }}
                    --bootstrap-internal-url http://{{ address('keystone') }}:{{ keystone.public_port }}
 
       daemon:

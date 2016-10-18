@@ -1,4 +1,4 @@
-FROM {{ namespace }}/openstack-base:{{ tag }}
+FROM {{ image_spec("openstack-base") }}
 MAINTAINER {{ maintainer }}
 
 #mysql-client only for provisioning need to be removed later

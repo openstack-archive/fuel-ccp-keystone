@@ -1,8 +1,11 @@
 configs:
   keystone:
     debug: false
-    public_port: 5000
-    admin_port: 35357
+
+    public_port:
+      cont: 5000
+    admin_port:
+      cont: 35357
 
     db:
       password: password

@@ -1,8 +1,8 @@
 {% set venv_path = '/var/lib/microservices/venv/lib/python2.7/site-packages' %}
-Listen {{ keystone.public_port }}
-Listen {{ keystone.admin_port }}
+Listen {{ keystone.public_port.cont }}
+Listen {{ keystone.admin_port.cont }}
 
-<VirtualHost *:{{ keystone.public_port }}>
+<VirtualHost *:{{ keystone.public_port.cont }}>
     WSGIDaemonProcess keystone-public processes={{ keystone.wsgi.processes }} threads={{ keystone.wsgi.threads }} user=keystone group=keystone display-name=%{GROUP} python-path={{ venv_path }}
     WSGIProcessGroup keystone-public
     WSGIScriptAlias / /var/www/cgi-bin/keystone/public
@@ -17,7 +17,7 @@ Listen {{ keystone.admin_port }}
     CustomLog "/var/log/ccp/keystone/keystone-access.log" access
 </VirtualHost>
 
-<VirtualHost *:{{ keystone.admin_port }}>
+<VirtualHost *:{{ keystone.admin_port.cont }}>
     WSGIDaemonProcess keystone-admin processes=5 threads=1 user=keystone group=keystone display-name=%{GROUP} python-path={{ venv_path }}
     WSGIProcessGroup keystone-admin
     WSGIScriptAlias / /var/www/cgi-bin/keystone/admin

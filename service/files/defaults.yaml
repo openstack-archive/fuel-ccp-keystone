@@ -4,6 +4,7 @@ configs:
 
     public_port:
       cont: 5000
+      ingress: identity
     admin_port:
       cont: 35357
 

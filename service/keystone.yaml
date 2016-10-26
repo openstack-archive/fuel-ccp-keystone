@@ -48,7 +48,6 @@ service:
                    --bootstrap-admin-url http://{{ address('keystone') }}:{{ keystone.admin_port.cont }}
                    --bootstrap-public-url {{ address('keystone', keystone.public_port, external=True, with_scheme=True) }}
                    --bootstrap-internal-url http://{{ address('keystone') }}:{{ keystone.public_port.cont }}
-
       daemon:
         dependencies:
           - memcached
@@ -56,6 +55,7 @@ service:
           - keystone-conf
           - wsgi-keystone-conf
           - fernet-key
+          - credential-key
         command: daemon.sh
       post:
         - name: keystone-create-project
@@ -72,3 +72,8 @@ files:
   fernet-key:
     path: /etc/keystone/fernet-keys/1
     content: fernet-key.j2
+  credential-key:
+    path: /etc/keystone/credential-keys/1
+    content: credential-key.j2
+    perm: "0600"
+    user: keystone

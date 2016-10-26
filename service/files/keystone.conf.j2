@@ -2,6 +2,7 @@
 debug = {{ keystone.debug }}
 use_syslog = False
 use_stderr = True
+max_token_size = 255
 
 [database]
 connection = mysql+pymysql://{{ keystone.db.username }}:{{ keystone.db.password }}@{{ address('mariadb') }}/{{ keystone.db.name }}

@@ -48,7 +48,12 @@ service:
                    --bootstrap-admin-url http://{{ address('keystone') }}:{{ keystone.admin_port }}
                    --bootstrap-public-url http://{{ address('keystone') }}:{{ keystone.public_port }}
                    --bootstrap-internal-url http://{{ address('keystone') }}:{{ keystone.public_port }}
-
+        - name: keystone-fernet-bootstrap
+          files:
+            - keystone-conf
+          dependencies:
+            - keystone-db-sync
+          command: keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
       daemon:
         dependencies:
           - memcached

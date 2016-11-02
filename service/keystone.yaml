@@ -61,9 +61,6 @@ service:
         - name: keystone-create-project
           type: single
           command: openstack project create service
-        - name: keystone-create-role-member
-          type: single
-          command: openstack role create _member_
 
 files:
   keystone-conf:

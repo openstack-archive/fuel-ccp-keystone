@@ -1,0 +1,27 @@
+upgrade:
+  name: upgrade-keystone
+  image: keystone
+  steps:
+    - name: expand
+      files:
+        - keystone-conf
+      command: keystone-manage db_sync --expand
+    - name: migrate
+      files:
+        - keystone-conf
+      command: keystone-manage db_sync  --migrate
+    - name: roll
+      type: rolling-upgrade
+    - name: contract
+      files:
+        - keystone-conf
+      command: keystone-manage db_sync --contract
+  volumes:
+    - name: keystone-logs
+      path: "/var/log/ccp/keystone"
+      type: host
+      readOnly: False
+files:
+  keystone-conf:
+    path: /etc/keystone/keystone.conf
+    content: keystone.conf.j2

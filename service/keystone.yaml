@@ -46,9 +46,9 @@ service:
                    --bootstrap-project-name {{ openstack.project_name }}
                    --bootstrap-role-name {{ openstack.role_name }}
                    --bootstrap-service-name keystone --bootstrap-region-id RegionOne
-                   --bootstrap-admin-url http://{{ address('keystone') }}:{{ keystone.admin_port.cont }}
+                   --bootstrap-admin-url {{ address('keystone', keystone.admin_port, with_scheme=True) }}
                    --bootstrap-public-url {{ address('keystone', keystone.public_port, external=True, with_scheme=True) }}
-                   --bootstrap-internal-url http://{{ address('keystone') }}:{{ keystone.public_port.cont }}
+                   --bootstrap-internal-url {{ address('keystone', keystone.public_port, with_scheme=True) }}
       daemon:
         dependencies:
           - memcached

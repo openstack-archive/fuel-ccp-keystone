@@ -11,6 +11,7 @@ upgrade:
           path: /var/ccp/backup/keystone
           type: host
           readOnly: false
+      topology_key: backup
     - name: expand
       files:
         - keystone-conf

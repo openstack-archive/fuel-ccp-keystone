@@ -2,6 +2,15 @@ upgrade:
   name: upgrade-keystone
   image: keystone
   steps:
+    - name: backup
+      command: /opt/ccp/bin/backup.sh
+      files:
+        - backup-sh
+      volumes:
+        - name: backup-dir
+          path: /var/ccp/backup/keystone
+          type: host
+          readOnly: false
     - name: expand
       files:
         - keystone-conf
@@ -20,3 +29,7 @@ files:
   keystone-conf:
     path: /etc/keystone/keystone.conf
     content: keystone.conf.j2
+  backup-sh:
+    path: /opt/ccp/bin/backup.sh
+    content: backup.sh.j2
+    perm: "500"

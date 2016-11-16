@@ -1,0 +1,6 @@
+#!/bin/bash -ex
+set -o pipefail
+BACKUP_FILE="/var/ccp/backup/keystone/backup-$(date -uIseconds | cut -f1 -d+).sql"
+mysqldump -h {{ address(service.database) }} \
+    -u {{ keystone.db.username }} -p{{ keystone.db.password }} \
+    --single-transaction {{ keystone.db.name }} > "${BACKUP_FILE}"

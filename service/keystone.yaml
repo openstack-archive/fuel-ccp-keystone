@@ -73,6 +73,8 @@ files:
   fernet-key:
     path: /etc/keystone/fernet-keys/1
     content: fernet-key.j2
+    perm: "0600"
+    user: keystone
   credential-key:
     path: /etc/keystone/credential-keys/1
     content: credential-key.j2

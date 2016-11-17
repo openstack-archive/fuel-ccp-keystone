@@ -15,7 +15,7 @@ RUN apt-get install -y --no-install-recommends \
 RUN useradd --user-group keystone \
     && /var/lib/microservices/venv/bin/pip install --upgrade /keystone \
     && mkdir -p /etc/keystone/fernet-keys /etc/keystone/credential-keys /var/www/cgi-bin/keystone /var/log/apache2 /home/keystone \
-    && cp -r /keystone/etc/* /etc/keystone/ \
+    && cp -r /keystone/etc/* /etc/keystone/ && rm -r /keystone \
     && cp /var/lib/microservices/venv/bin/keystone-wsgi-admin /var/www/cgi-bin/keystone/admin \
     && cp /var/lib/microservices/venv/bin/keystone-wsgi-public /var/www/cgi-bin/keystone/public \
     && touch /etc/keystone/fernet-keys/.placeholder \

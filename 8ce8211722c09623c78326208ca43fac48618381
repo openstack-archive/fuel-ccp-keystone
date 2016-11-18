@@ -1,0 +1,8 @@
+Code-Review+2: Proskurin Kirill <kproskurin@mirantis.com>
+Workflow+1: Proskurin Kirill <kproskurin@mirantis.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 18 Nov 2016 17:16:22 +0000
+Reviewed-on: https://review.openstack.org/398592
+Project: openstack/fuel-ccp-keystone
+Branch: refs/heads/master

@@ -7,10 +7,10 @@ service:
     - name: keystone
       image: keystone
       probes:
-        readiness: "true"
-        liveness:
-          command: "true"
-          type: "exec"
+        readiness:
+          type: "httpGet"
+          port: {{ keystone.admin_port.cont }}
+          path: "/"
       volumes:
         - name: keystone-logs
           path: "/var/log/ccp/keystone"

@@ -14,7 +14,7 @@ enabled = True
 backend = oslo_cache.memcache_pool
 memcache_servers = memcached:{{ memcached.port.cont }}
 memcache_dead_retry = 60
-memcache_socket_timeout = 2
+memcache_socket_timeout = 1
 memcache_pool_maxsize = 30
 
 [token]

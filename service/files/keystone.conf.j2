@@ -12,7 +12,7 @@ max_overflow = 60
 [cache]
 enabled = True
 backend = oslo_cache.memcache_pool
-memcache_servers = memcached:{{ memcached.port.cont }}
+memcache_servers = {{ address('memcached', memcached.port) }}
 memcache_dead_retry = 60
 memcache_socket_timeout = 1
 memcache_pool_maxsize = 30

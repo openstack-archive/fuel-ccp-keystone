@@ -29,5 +29,5 @@ configs:
 
 sources:
   openstack/keystone:
-    git_url: https://github.com/openstack/keystone.git
+    git_url: https://git.openstack.org/openstack/keystone.git
     git_ref: stable/newton

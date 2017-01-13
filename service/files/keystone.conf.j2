@@ -22,3 +22,6 @@ provider = fernet
 
 [assignment]
 driver = sql
+
+{# messaging macros templates #}
+{{ oslo_messaging[messaging.backend.notifications]('notifications_config') }}

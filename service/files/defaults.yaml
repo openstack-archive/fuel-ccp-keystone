@@ -21,6 +21,11 @@ configs:
     fernet_key: "ZAabsQIXsSW7Ez52UZRqUXDz87y9+R+mbxVZ38gRmjg="
     credential_key: "2jjLrgOLvI-wj7g-8058SSCw0-ZnL4Ghg5cLuBirxL8="
 
+    notifications:
+      enable: false
+      # format can be basic or cadf:
+      format: cadf
+
   openstack:
     user_password: password
     user_name: admin

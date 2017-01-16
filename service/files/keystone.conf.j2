@@ -3,6 +3,9 @@ debug = {{ keystone.debug }}
 use_syslog = False
 use_stderr = True
 max_token_size = 255
+{% if keystone.notifications.enable %}
+notification_format = {{ keystone.notifications.format }}
+{% endif %}
 
 [database]
 connection = mysql+pymysql://{{ keystone.db.username }}:{{ keystone.db.password }}@{{ address(service.database) }}/{{ keystone.db.name }}

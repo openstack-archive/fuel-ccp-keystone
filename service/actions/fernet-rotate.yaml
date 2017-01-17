@@ -1,0 +1,8 @@
+actions:
+  - name: fernet-rotate
+    image: keystone
+    command: "/usr/bin/python /opt/ccp/bin/fernet-manage.py fernet_rotate"
+    files:
+      - path: /opt/ccp/bin/fernet-manage.py
+        content: fernet-manage.py.j2
+        perm: "0700"

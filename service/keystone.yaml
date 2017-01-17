@@ -53,6 +53,9 @@ service:
       daemon:
         dependencies:
           - memcached
+          # {% if keystone.notifications.enable -%}
+          - "{{ messaging.dependencies[messaging.backend.notifications] }}"
+          # {%- endif %}
         files:
           - keystone-conf
           - wsgi-keystone-conf

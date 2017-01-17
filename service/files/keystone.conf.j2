@@ -27,8 +27,8 @@ provider = fernet
 driver = sql
 
 {% if keystone.notifications.enable %}
-{# This section should be updated after https://review.openstack.org/#/c/419995/ is merged #}
 [oslo_messaging_notifications]
 driver = messagingv2
-transport_url = rabbit://{{ rabbitmq.user }}:{{ rabbitmq.password }}@{{ address('rabbitmq', rabbitmq.port) }}
 {% endif %}
+
+{{ oslo_messaging[messaging.backend.notifications]('notifications_config') }}

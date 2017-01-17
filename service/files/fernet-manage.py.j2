@@ -1,0 +1,83 @@
+#!/usr/bin/env python
+
+import base64
+import os
+import re
+import six
+import subprocess
+import sys
+
+import pykube
+
+FERNET_DIR = '/etc/keystone/fernet-keys/'
+SECRET_NAME = '{{ keystone.fernet_secret_name }}'
+NAMESPACE = '{{ namespace }}'
+PROVIDED_KEYS = {
+{% if keystone.fernet_keys is defined %}
+{% for key, value in keystone.fernet_keys.iteritems() %}
+    '{{ key }}': '{{ value }}' {%- if not loop.last %},{% endif -%}
+{% endfor %}
+{% endif %}
+}
+
+def get_pykube_client():
+    os.environ['KUBERNETES_SERVICE_HOST'] = 'kubernetes.default'
+    config = pykube.KubeConfig.from_service_account()
+    return pykube.HTTPClient(config)
+
+def get_secret_definition(name):
+    client = get_pykube_client()
+    obj_dict = {
+        'metadata': {
+            'name': name,
+            'namespace': NAMESPACE
+        }
+    }
+    secret = pykube.Secret(client, obj_dict)
+    return secret
+
+def read_from_files():
+    keys = filter(
+        lambda name: os.path.isfile(FERNET_DIR + name) and re.match("^\d+$", name),
+        os.listdir(FERNET_DIR)
+    )
+    data = {}
+    for key in keys:
+        with open(FERNET_DIR + key, 'r') as f:
+            data[key] = f.read()
+    return data
+
+def get_keys_data():
+    keys = PROVIDED_KEYS or read_from_files()
+    return dict([(key, base64.b64encode(value.encode()).decode())
+               for (key, value) in six.iteritems(keys)])
+
+def write_to_files(data):
+    for (key, value) in six.iteritems(data):
+        with open(FERNET_DIR + key, 'w') as f:
+            f.write(base64.b64decode(value).decode())
+
+
+if (len(sys.argv) != 2 or sys.argv[1] not in ('fernet_setup', 'fernet_rotate')):
+    print 'Invalid arguments. One of (fernet_setup | fernet_rotate) is expected.'
+    sys.exit(1)
+
+command = sys.argv[1]
+
+secret = get_secret_definition(SECRET_NAME)
+if not secret.exists():
+    print "Secret '{0}' does not exist.".format(SECRET_NAME)
+    sys.exit(1)
+
+secret.reload()
+if not PROVIDED_KEYS:
+    if (command == 'fernet_rotate'):
+        print "Copying existing fernet keys to {0}.".format(FERNET_DIR)
+        write_to_files(secret.obj['data'])
+
+    print "Executing keystone-manage '{0}' command.".format(command)
+    subprocess.call(['keystone-manage', command, '--keystone-user=keystone', '--keystone-group=keystone'])
+
+print "Updating data for '{0}' secret.".format(SECRET_NAME)
+secret.obj['data'] = get_keys_data()
+secret.update()

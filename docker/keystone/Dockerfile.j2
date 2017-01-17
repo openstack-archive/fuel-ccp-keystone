@@ -20,7 +20,8 @@ RUN useradd --user-group keystone \
     && cp /var/lib/microservices/venv/bin/keystone-wsgi-public /var/www/cgi-bin/keystone/public \
     && touch /etc/keystone/fernet-keys/.placeholder \
     && chown -R keystone: /etc/keystone /var/www/cgi-bin/keystone /var/log/apache2 /home/keystone \
-    && chmod -R 500 /etc/keystone/fernet-keys /etc/keystone/credential-keys
+    && chmod -R 700 /etc/keystone/fernet-keys \
+    && chmod -R 500 /etc/keystone/credential-keys
 
 COPY daemon.sh /usr/local/bin/daemon.sh
 COPY keystone_sudoers /etc/sudoers.d/keystone_sudoers

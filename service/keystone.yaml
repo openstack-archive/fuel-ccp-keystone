@@ -53,6 +53,7 @@ service:
       daemon:
         dependencies:
           - memcached
+          - "{{ messaging.dependencies[messaging.backend.notifications] }}"
         files:
           - keystone-conf
           - wsgi-keystone-conf

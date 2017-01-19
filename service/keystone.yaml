@@ -4,6 +4,10 @@ service:
   ports:
     - {{ keystone.public_port }}
     - {{ keystone.admin_port }}
+  annotations:
+    service:
+      prometheus.io/probe: "true"
+      prometheus.io/probe_path: "/v3"
   containers:
     - name: keystone
       image: keystone

@@ -16,6 +16,9 @@ service:
           type: "httpGet"
           port: {{ keystone.admin_port.cont }}
           path: "/"
+          # {% if keystone.tls.enabled %}
+          scheme: "https"
+          # {% endif %}
       volumes:
         - name: keystone-logs
           path: "/var/log/ccp/keystone"
@@ -78,6 +81,9 @@ service:
           - keystone-conf
           - wsgi-keystone-conf
           - credential-key
+          # {% if keystone.tls.enabled %}
+          - ca_cert
+          # {% endif %}
         secrets:
           - keystone-fernet
         command: daemon.sh
@@ -90,6 +96,17 @@ service:
           dependencies:
             - keystone-create-domain
           command: openstack project create --domain {{ service_account.domain }} {{ service_account.project }}
+    # {% if keystone.tls.enabled %}
+    - name: nginx
+      image: nginx
+      daemon:
+        files:
+          - upstreams
+          - servers
+          - server-cert
+          - server-key
+        command: nginx
+    # {% endif %}
 
 files:
   keystone-conf:
@@ -108,6 +125,27 @@ files:
     content: fernet-manage.py
     perm: "0400"
     user: keystone
+  # {% if keystone.tls.enabled %}
+  servers:
+    path: /etc/nginx/conf.d/servers.conf
+    content: servers.conf.j2
+    perm: "0400"
+  upstreams:
+    path: /etc/nginx/conf.d/upstreams.conf
+    content: upstreams.conf.j2
+    perm: "0400"
+  ca_cert:
+    path: /opt/ccp/etc/tls/ca.pem
+    content: ca-cert.pem.j2
+  server-cert:
+    path: /opt/ccp/etc/tls/server-cert.pem
+    content: server-cert.pem.j2
+    perm: "0400"
+  server-key:
+    path: /opt/ccp/etc/tls/server-key.pem
+    content: server-key.pem.j2
+    perm: "0400"
+  # {% endif %}
 secrets:
   keystone-fernet:
     path: "/etc/keystone/fernet-keys"

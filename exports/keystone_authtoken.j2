@@ -9,4 +9,7 @@ project_name = {{ service_account.project }}
 username = {{ username }}
 password = {{ password }}
 memcached_servers = {{ address("memcached", memcached.port) }}
+{% if keystone.tls.enabled %}
+cafile = /opt/ccp/etc/tls/ca.pem
+{% endif %}
 {%- endmacro %}

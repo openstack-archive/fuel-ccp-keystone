@@ -1,0 +1,6 @@
+upstream keystone_admin {
+    server 127.0.0.1:{{ keystone.tls.admin_port }};
+}
+upstream keystone_public {
+    server 127.0.0.1:{{ keystone.tls.public_port }};
+}

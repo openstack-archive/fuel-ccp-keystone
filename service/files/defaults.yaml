@@ -1,7 +1,8 @@
 configs:
   keystone:
     debug: false
-
+    tls:
+      enabled: true
     public_port:
       cont: 5000
       ingress: identity

@@ -65,11 +65,26 @@ service:
           - wsgi-keystone-conf
           - fernet-key
           - credential-key
+          # {% if security.tls.enabled %}
+          - ca_cert
+          # {% endif %}
         command: daemon.sh
       post:
         - name: keystone-create-project
           type: single
           command: openstack project create service
+    # {% if security.tls.enabled %}
+    - name: nginx
+      image: nginx
+      daemon:
+        files:
+          - upstreams
+          - servers
+          - server-cert
+          - server-key
+        command: nginx
+    # {% endif %}
+
 
 files:
   keystone-conf:
@@ -88,3 +103,24 @@ files:
     content: credential-key.j2
     perm: "0600"
     user: keystone
+  # {% if security.tls.enabled %}
+  servers:
+    path: /etc/nginx/conf.d/servers.conf
+    content: servers.conf.j2
+    perm: "0400"
+  upstreams:
+    path: /etc/nginx/conf.d/upstreams.conf
+    content: upstreams.conf.j2
+    perm: "0400"
+  ca_cert:
+    path: /opt/ccp/etc/tls/ca.pem
+    content: ca-cert.pem.j2
+  server-cert:
+    path: /opt/ccp/etc/tls/server-cert.pem
+    content: server-cert.pem.j2
+    perm: "0400"
+  server-key:
+    path: /opt/ccp/etc/tls/server-key.pem
+    content: server-key.pem.j2
+    perm: "0400"
+  # {% endif %}

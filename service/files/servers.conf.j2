@@ -1,0 +1,18 @@
+server {
+    listen {{ network_topology["private"]["address"] }}:{{ keystone.admin_port.cont }};
+    include common/ssl.conf;
+
+    location / {
+        proxy_pass http://keystone_admin;
+        include common/proxy-headers.conf;
+    }
+}
+server {
+    listen {{ network_topology["private"]["address"] }}:{{ keystone.public_port.cont }};
+    include common/ssl.conf;
+
+    location / {
+        proxy_pass http://keystone_public;
+        include common/proxy-headers.conf;
+    }
+}

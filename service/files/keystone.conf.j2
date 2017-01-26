@@ -7,6 +7,13 @@ max_token_size = 255
 notification_format = {{ keystone.notifications.format }}
 {% endif %}
 
+{% if keystone.tls.enabled %}
+admin_bind_host=127.0.0.1
+public_bind_host=127.0.0.1
+{% endif %}
+public_port = {{ keystone.public_port.cont}}
+admin_port = {{ keystone.admin_port.cont}}
+
 [database]
 connection = mysql+pymysql://{{ keystone.db.username }}:{{ keystone.db.password }}@{{ address(service.database) }}/{{ keystone.db.name }}{% if percona.tls.enabled %}?ssl_ca=/opt/ccp/etc/tls/ca.pem{% endif %}
 max_retries = -1

@@ -51,9 +51,9 @@ service:
                    --bootstrap-project-name {{ openstack.project_name }}
                    --bootstrap-role-name {{ openstack.role_name }}
                    --bootstrap-service-name keystone --bootstrap-region-id RegionOne
-                   --bootstrap-admin-url {{ address('keystone', keystone.admin_port, with_scheme=True) }}
-                   --bootstrap-public-url {{ address('keystone', keystone.public_port, external=True, with_scheme=True) }}
-                   --bootstrap-internal-url {{ address('keystone', keystone.public_port, with_scheme=True) }}
+                   --bootstrap-admin-url {{ address('keystone', keystone.admin_port, with_scheme=True, tls=True) }}
+                   --bootstrap-public-url {{ address('keystone', keystone.public_port, external=True, with_scheme=True, tls=True) }}
+                   --bootstrap-internal-url {{ address('keystone', keystone.public_port, with_scheme=True, tls=True) }}
       daemon:
         dependencies:
           - memcached
@@ -70,6 +70,18 @@ service:
         - name: keystone-create-project
           type: single
           command: openstack project create service
+    {% if security.tls.enabled %}
+    - name: nginx
+      image: nginx
+      daemon:
+        files:
+          - nginx
+          - ca_cert
+          - server-cert
+          - server-key
+        command: nginx
+    {% endif %}
+
 
 files:
   keystone-conf:
@@ -88,3 +100,21 @@ files:
     content: credential-key.j2
     perm: "0600"
     user: keystone
+  {% if security.tls.enabled %}
+  nginx:
+    path: /etc/nginx/nginx.conf
+    content: nginx.conf.j2
+    perm: "0400"
+  ca_cert:
+    path: /etc/nginx/ssl/certs/ca-cert.pem
+    content: ca-cert.pem.j2
+    perm: "0400"
+  server-cert:
+    path: /etc/nginx/ssl/certs/server-cert.pem
+    content: server-cert.pem.j2
+    perm: "0400"
+  server-key:
+    path: /etc/nginx/ssl/private/server-key.pem
+    content: server-key.pem.j2
+    perm: "0400"
+  {% endif %}

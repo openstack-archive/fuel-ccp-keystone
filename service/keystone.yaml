@@ -74,6 +74,9 @@ service:
           - keystone-conf
           - wsgi-keystone-conf
           - credential-key
+          # {% if security.tls.openstack.enabled %}
+          - ca_cert
+          # {% endif %}
         secrets:
           - keystone-fernet
         command: daemon.sh
@@ -86,6 +89,17 @@ service:
           dependencies:
             - keystone-create-domain
           command: openstack project create --domain {{ service_account.domain }} {{ service_account.project }}
+    # {% if security.tls.openstack.enabled %}
+    - name: nginx
+      image: nginx
+      daemon:
+        files:
+          - upstreams
+          - servers
+          - server-cert
+          - server-key
+        command: nginx
+    # {% endif %}
 
 files:
   keystone-conf:
@@ -104,6 +118,27 @@ files:
     content: fernet-manage.py
     perm: "0400"
     user: keystone
+  # {% if security.tls.openstack.enabled %}
+  servers:
+    path: /etc/nginx/conf.d/servers.conf
+    content: servers.conf.j2
+    perm: "0400"
+  upstreams:
+    path: /etc/nginx/conf.d/upstreams.conf
+    content: upstreams.conf.j2
+    perm: "0400"
+  ca_cert:
+    path: /opt/ccp/etc/tls/ca.pem
+    content: ca-cert.pem.j2
+  server-cert:
+    path: /opt/ccp/etc/tls/server-cert.pem
+    content: server-cert.pem.j2
+    perm: "0400"
+  server-key:
+    path: /opt/ccp/etc/tls/server-key.pem
+    content: server-key.pem.j2
+    perm: "0400"
+  # {% endif %}
 secrets:
   keystone-fernet:
     path: "/etc/keystone/fernet-keys"

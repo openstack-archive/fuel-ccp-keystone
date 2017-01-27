@@ -1,4 +1,4 @@
-dsl_version: 0.4.0
+dsl_version: 0.6.0
 service:
   name: keystone
   ports:
@@ -24,6 +24,16 @@ service:
       pre:
         - name: chown-logs-dir
           command: "sudo /bin/chown keystone:keystone /var/log/ccp/keystone"
+        - name: chown-fernet-dir
+          command: "sudo /bin/chown keystone:keystone /etc/keystone/fernet-keys"
+        - name: remove-fernet-dir-sticky-bit
+          command: /bin/chmod -t /etc/keystone/fernet-keys
+        - name: generate-fernet-keys
+          command: "/usr/bin/python /opt/ccp/bin/fernet-manage.py fernet_setup"
+          image: keystone
+          type: single
+          files:
+            - fernet-manage
         - name: keystone-db-create
           dependencies:
             - {{ service.database }}
@@ -63,8 +73,9 @@ service:
         files:
           - keystone-conf
           - wsgi-keystone-conf
-          - fernet-key
           - credential-key
+        secrets:
+          - keystone-fernet
         command: daemon.sh
       post:
         - name: keystone-create-project
@@ -78,13 +89,18 @@ files:
   wsgi-keystone-conf:
     path: /etc/apache2/conf-enabled/wsgi-keystone.conf
     content: wsgi-keystone.conf.j2
-  fernet-key:
-    path: /etc/keystone/fernet-keys/1
-    content: fernet-key.j2
-    perm: "0600"
-    user: keystone
   credential-key:
     path: /etc/keystone/credential-keys/1
     content: credential-key.j2
     perm: "0600"
     user: keystone
+  fernet-manage:
+    path: /opt/ccp/bin/fernet-manage.py
+    content: fernet-manage.py.j2
+    perm: "0400"
+    user: keystone
+secrets:
+  keystone-fernet:
+    path: "/etc/keystone/fernet-keys"
+    secret:
+      secretName: {{ keystone.fernet_secret_name }}

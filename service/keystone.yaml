@@ -30,8 +30,12 @@ service:
           type: single
           command:
             mysql -u root -p{{ db.root_password }} -h {{ address(service.database) }} -e "create database {{ keystone.db.name }};
-            grant all privileges on {{ keystone.db.name }}.* to '{{ keystone.db.username }}'@'%' identified by '{{ keystone.db.password }}';
-            grant super on *.* to '{{ keystone.db.username }}'@'%' identified by '{{ keystone.db.password }}';"
+            create user '{{ keystone.db.username }}'@'%' identified by '{{ keystone.db.password }}'
+            {% if percona.tls.enabled and security.tls.enabled %} require ssl {% endif %};
+            grant all privileges on {{ keystone.db.name }}.* to '{{ keystone.db.username }}'@'%' identified by '{{ keystone.db.password }}'
+            {% if percona.tls.enabled and security.tls.enabled %} require ssl {% endif %};
+            grant super on *.* to '{{ keystone.db.username }}'@'%' identified by '{{ keystone.db.password }}'
+            {% if percona.tls.enabled and security.tls.enabled %} require ssl {% endif %};"
         - name: keystone-db-sync
           files:
             - keystone-conf

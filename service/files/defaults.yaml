@@ -17,6 +17,18 @@ configs:
       processes: 6
       threads: 1
 
+    ldap:
+      enabled: false
+      url: ldap://changeme
+      user: "dc=Manager,dc=example,dc=com"
+      password: changeme
+      suffix: "dc=example,dc=com"
+
+      tls:
+        enabled: false
+        tls_req_cert: demand
+        cacert: null
+
     # 100% random default
     fernet_key: "ZAabsQIXsSW7Ez52UZRqUXDz87y9+R+mbxVZ38gRmjg="
     credential_key: "2jjLrgOLvI-wj7g-8058SSCw0-ZnL4Ghg5cLuBirxL8="

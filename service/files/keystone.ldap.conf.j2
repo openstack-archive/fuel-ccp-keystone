@@ -1,0 +1,12 @@
+[identity]
+driver = ldap
+
+[ldap]
+url = {{ keystone.ldap.url }}
+user = {{ keystone.ldap.user }}
+password = {{ keystone.ldap.password }}
+suffix = {{ keystone.ldap.suffix }}
+
+use_tls = {{ keystone.ldap.tls.enabled }}
+tls_req_cert = {{ keystone.ldap.tls.tls_req_cert }}
+tls_cacertfile = /etc/keystone/ldap_tls_cacert.pem

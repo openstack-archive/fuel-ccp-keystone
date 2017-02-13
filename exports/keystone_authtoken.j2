@@ -1,0 +1,12 @@
+{% macro keystone_authtoken(service, username, password) -%}
+[keystone_authtoken]
+auth_uri = {{ address("keystone", keystone.public_port, with_scheme=True) }}
+auth_url = {{ address("keystone", keystone.admin_port, with_scheme=True) }}
+auth_type = password
+project_domain_name = {{ service_account.domain }}
+user_domain_name = {{ service_account.domain }}
+project_name = {{ service }}
+username = {{ username }}
+password = {{ password }}
+memcached_servers = {{ address("memcached", memcached.port) }}
+{%- endmacro %}

@@ -78,9 +78,14 @@ service:
           - keystone-fernet
         command: daemon.sh
       post:
+        - name: keystone-create-domain
+          type: single
+          command: openstack domain create --or-show {{ service_account.domain }}
         - name: keystone-create-project
           type: single
-          command: openstack project create service
+          dependencies:
+            - keystone-create-domain
+          command: openstack project create --domain {{ service_account.domain }} {{ service_account.project }}
 
 files:
   keystone-conf:

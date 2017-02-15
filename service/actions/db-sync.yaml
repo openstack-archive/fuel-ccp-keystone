@@ -1,0 +1,9 @@
+actions:
+  - name: keystone-db-sync
+    image: keystone
+    dependencies:
+      - keystone-db-create
+    command: keystone-manage db_sync
+    files:
+      - path: /etc/keystone/keystone.conf
+        content: keystone.conf.j2

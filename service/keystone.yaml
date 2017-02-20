@@ -97,7 +97,7 @@ service:
             - keystone-create-domain
           command: openstack project create --domain {{ service_account.domain }} {{ service_account.project }}
     # {% if keystone.tls.enabled %}
-    - name: nginx
+    - name: nginx-keystone
       image: nginx
       daemon:
         files:

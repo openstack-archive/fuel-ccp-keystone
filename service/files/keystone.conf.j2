@@ -23,6 +23,10 @@ memcache_pool_maxsize = 30
 [token]
 provider = fernet
 
+[keystone_authtoken]
+memcache_security_strategy = ENCRYPT
+memcache_secret_key = password
+
 [assignment]
 driver = sql
 

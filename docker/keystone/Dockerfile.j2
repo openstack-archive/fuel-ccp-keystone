@@ -7,14 +7,16 @@ RUN apt-get install -y --no-install-recommends \
         apache2 \
         libapache2-mod-wsgi \
         mysql-client \
+        libldap2-dev \
+        libsasl2-dev \
     && echo > /etc/apache2/ports.conf \
     && apt-get clean
 
 {{ copy_sources("openstack/keystone", "/keystone") }}
 
 RUN useradd --user-group keystone \
-    && /var/lib/microservices/venv/bin/pip install /keystone \
-    && mkdir -p /etc/keystone/fernet-keys /etc/keystone/credential-keys /var/www/cgi-bin/keystone /var/log/apache2 /home/keystone \
+    && /var/lib/microservices/venv/bin/pip install ldappool /keystone \
+    && mkdir -p /etc/keystone/fernet-keys /etc/keystone/credential-keys /etc/keystone/domains /var/www/cgi-bin/keystone /var/log/apache2 /home/keystone \
     && cp -r /keystone/etc/* /etc/keystone/ \
     && cp /var/lib/microservices/venv/bin/keystone-wsgi-admin /var/www/cgi-bin/keystone/admin \
     && cp /var/lib/microservices/venv/bin/keystone-wsgi-public /var/www/cgi-bin/keystone/public \

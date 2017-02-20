@@ -79,6 +79,12 @@ service:
           # {%- endif %}
         files:
           - keystone-conf
+          # {% if keystone.ldap.enabled %}
+          - keystone-ldap-conf
+          # {% if keystone.ldap.tls.enabled %}
+          - keystone-ldap-cacert
+          # {% endif %}
+          # {% endif %}
           - wsgi-keystone-conf
           - credential-key
           # {% if keystone.tls.enabled %}
@@ -96,6 +102,12 @@ service:
           dependencies:
             - keystone-create-domain
           command: openstack project create --domain {{ service_account.domain }} {{ service_account.project }}
+        # {% if keystone.ldap.enabled %}
+        - name: keystone-create-ldap-domain
+          type: single
+          command: openstack domain create ldap
+        # {% endif %}
+
     # {% if keystone.tls.enabled %}
     - name: nginx-keystone
       image: nginx
@@ -112,6 +124,12 @@ files:
   keystone-conf:
     path: /etc/keystone/keystone.conf
     content: keystone.conf.j2
+  keystone-ldap-conf:
+    path: /etc/keystone/domains/keystone.ldap.conf
+    content: keystone.ldap.conf.j2
+  keystone-ldap-cacert:
+    path: /etc/keystone/ldap_tls_cacert.pem
+    content: keystone.ldap.cacert.j2
   wsgi-keystone-conf:
     path: /etc/apache2/conf-enabled/wsgi-keystone.conf
     content: wsgi-keystone.conf.j2

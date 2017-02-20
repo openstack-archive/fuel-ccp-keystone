@@ -26,6 +26,9 @@ provider = fernet
 [assignment]
 driver = sql
 
+[identity]
+domain_specific_drivers_enabled = true
+
 {% if keystone.notifications.enable %}
 [oslo_messaging_notifications]
 driver = messagingv2

@@ -15,6 +15,22 @@ configs:
 
     fernet_secret_name: keystone-fernet-keys
 
+    ldap:
+      enabled: false
+      url: ldap://changeme
+      user: "dc=Manager,dc=example,dc=com"
+      suffix: "dc=example,dc=com"
+
+      tls:
+        enabled: false
+        tls_req_cert: demand
+
+      user_tree_dn: "ou=Users,dc=example,dc=com"
+      user_objectclass: inetOrgPerson
+
+      group_tree_dn: "ou=Groups,dc=example,dc=com"
+      group_objectclass: groupOfNames
+
     notifications:
       enable: false
       # format can be basic or cadf:
@@ -33,6 +49,10 @@ secret_configs:
     credential_key: "2jjLrgOLvI-wj7g-8058SSCw0-ZnL4Ghg5cLuBirxL8="
     encrypt_tokens_in_memcached:
       secret_key: password
+    ldap:
+      password: changeme
+      tls:
+        cacert: null
 
   openstack:
     user_password: password

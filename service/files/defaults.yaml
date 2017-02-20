@@ -19,6 +19,25 @@ configs:
       threads: 1
 
     fernet_secret_name: keystone-fernet-keys
+
+    ldap:
+      enabled: false
+      url: ldap://changeme
+      user: "dc=Manager,dc=example,dc=com"
+      password: changeme
+      suffix: "dc=example,dc=com"
+
+      tls:
+        enabled: false
+        tls_req_cert: demand
+        cacert: null
+
+      user_tree_dn: "ou=Users,dc=example,dc=org"
+      user_objectclass: inetOrgPerson
+
+      group_tree_dn: "ou=Groups,dc=example,dc=org"
+      group_objectclass: groupOfNames
+
     # 100% random default
     credential_key: "2jjLrgOLvI-wj7g-8058SSCw0-ZnL4Ghg5cLuBirxL8="
 

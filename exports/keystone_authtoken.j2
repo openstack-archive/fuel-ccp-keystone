@@ -12,4 +12,8 @@ memcached_servers = {{ address("memcached", memcached.port) }}
 {% if keystone.tls.enabled %}
 cafile = /opt/ccp/etc/tls/ca.pem
 {% endif %}
+{% if keystone.encrypt_tokens_in_memcached.enabled %}
+memcache_security_strategy = ENCRYPT
+memcache_secret_key = {{ keystone.encrypt_tokens_in_memcached.secret_key }}
+{% endif %}
 {%- endmacro %}

@@ -23,6 +23,12 @@ memcache_pool_maxsize = 30
 [token]
 provider = fernet
 
+{% if keystone.encrypt_tokens_in_memcached.enabled %}
+[keystone_authtoken]
+memcache_security_strategy = ENCRYPT
+memcache_secret_key = {{ keystone.encrypt_tokens_in_memcached.secret_key }}
+{% endif %}
+
 [assignment]
 driver = sql
 

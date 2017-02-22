@@ -27,6 +27,10 @@ configs:
       # format can be basic or cadf:
       format: cadf
 
+    encrypt_tokens_in_memcached:
+      enable: true
+      secret_key: password
+
   openstack:
     user_password: password
     user_name: admin

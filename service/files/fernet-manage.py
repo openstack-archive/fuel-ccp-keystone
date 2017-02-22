@@ -111,6 +111,8 @@ def main():
 
     LOG.info("Updating data for '%s' secret.", SECRET_NAME)
     updated_keys = get_keys_data()
+    secret.obj['data'] = None
+    secret.update()
     secret.obj['data'] = updated_keys
     secret.update()
     LOG.info("%s fernet keys have been placed to secret '%s'", len(updated_keys), SECRET_NAME)

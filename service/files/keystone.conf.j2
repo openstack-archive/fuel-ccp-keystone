@@ -8,7 +8,7 @@ notification_format = {{ keystone.notifications.format }}
 {% endif %}
 
 [database]
-connection = mysql+pymysql://{{ keystone.db.username }}:{{ keystone.db.password }}@{{ address(service.database) }}/{{ keystone.db.name }}{% if db.tls.enabled %}?ssl_ca=/opt/ccp/etc/tls/ca.pem{% endif %}
+connection = mysql+pymysql://{{ keystone.db.username }}:{{ keystone.db.password }}@{{ address("database") }}/{{ keystone.db.name }}{% if db.tls.enabled %}?ssl_ca=/opt/ccp/etc/tls/ca.pem{% endif %}
 max_retries = -1
 max_overflow = 60
 

@@ -29,11 +29,12 @@ service:
           command: "sudo /bin/chown keystone:keystone /var/log/ccp/keystone"
         - name: chown-fernet-dir
           command: "sudo /bin/chown keystone:keystone /etc/keystone/fernet-keys"
-        - name: remove-fernet-dir-sticky-bit
-          command: /bin/chmod -t /etc/keystone/fernet-keys
-        - name: generate-fernet-keys
+        - name: fernet-dir-permissions
+          command: "/bin/chmod 0700 /etc/keystone/fernet-keys"
+          dependencies:
+            - chown-fernet-dir
+        - name: keystone-generate-fernet-keys
           command: "/usr/bin/python /opt/ccp/bin/fernet-manage.py fernet_setup"
-          image: keystone
           type: single
           files:
             - fernet-manage
@@ -61,6 +62,7 @@ service:
             - keystone-conf
           dependencies:
             - keystone-db-sync
+            - keystone-generate-fernet-keys
           type: single
           command: keystone-manage bootstrap
                    --bootstrap-password {{ openstack.user_password }}

@@ -31,8 +31,6 @@ service:
           command: "sudo /bin/chown keystone:keystone /etc/keystone/fernet-keys"
         - name: fernet-dir-permissions
           command: "/bin/chmod 0700 /etc/keystone/fernet-keys"
-          dependencies:
-            - chown-fernet-dir
         - name: keystone-generate-fernet-keys
           command: "/usr/bin/python /opt/ccp/bin/fernet-manage.py fernet_setup"
           type: single

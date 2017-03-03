@@ -38,10 +38,10 @@ service:
             - fernet-manage
         - name: keystone-db-create
           dependencies:
-            - {{ service.database }}
+            - database
           type: single
           command:
-            mysql -u root -p{{ db.root_password }} -h {{ address(service.database) }} -e "create database {{ keystone.db.name }};
+            mysql -u root -p{{ db.root_password }} -h {{ address("database") }} -e "create database {{ keystone.db.name }};
             create user '{{ keystone.db.username }}'@'%' identified by '{{ keystone.db.password }}'
             {% if db.tls.enabled %} require ssl {% endif %};
             grant all privileges on {{ keystone.db.name }}.* to '{{ keystone.db.username }}'@'%' identified by '{{ keystone.db.password }}'
@@ -75,7 +75,7 @@ service:
         dependencies:
           - memcached
           # {% if keystone.notifications.enable -%}
-          - "{{ messaging.dependencies[messaging.backend.notifications] }}"
+          - notifications
           # {%- endif %}
         files:
           - keystone-conf

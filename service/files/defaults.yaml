@@ -34,7 +34,7 @@ configs:
     role_name: admin
 
   service_account:
-    domain: default
+    domain: Default
     project: service
 
 sources:

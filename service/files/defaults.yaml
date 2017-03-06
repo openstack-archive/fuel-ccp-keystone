@@ -9,23 +9,25 @@ configs:
     admin_port:
       cont: 35357
 
-    db:
-      password: password
-      name: keystone
-      username: keystone
-
     wsgi:
       processes: 6
       threads: 1
 
     fernet_secret_name: keystone-fernet-keys
-    # 100% random default
-    credential_key: "2jjLrgOLvI-wj7g-8058SSCw0-ZnL4Ghg5cLuBirxL8="
 
     notifications:
       enable: false
       # format can be basic or cadf:
       format: cadf
+
+secret_configs:
+  keystone:
+    db:
+      password: password
+      name: keystone
+      username: keystone
+
+    credential_key: "2jjLrgOLvI-wj7g-8058SSCw0-ZnL4Ghg5cLuBirxL8="
 
   openstack:
     user_password: password

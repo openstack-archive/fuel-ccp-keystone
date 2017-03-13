@@ -96,6 +96,10 @@ service:
           dependencies:
             - keystone-create-domain
           command: openstack project create --domain {{ service_account.domain }} {{ service_account.project }}
+        - name: keystone-create-admin-role
+          type: single
+          command: openstack role add {{ openstack.role_name }} --user {{ openstack.user_name }} --domain default
+
     # {% if keystone.tls.enabled %}
     - name: nginx-keystone
       image: nginx

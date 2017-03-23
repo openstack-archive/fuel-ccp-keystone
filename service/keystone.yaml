@@ -24,6 +24,10 @@ service:
           path: "/var/log/ccp/keystone"
           type: host
           readOnly: False
+      lifecycle:
+        preStop:
+          exec:
+            command: ["apachectl", "-k", "graceful-stop"]
       pre:
         - name: chown-logs-dir
           command: "sudo /bin/chown keystone:keystone /var/log/ccp/keystone"

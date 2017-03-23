@@ -1,4 +1,4 @@
-dsl_version: 0.6.0
+dsl_version: 0.9.0
 service:
   name: keystone
   ports:
@@ -24,6 +24,10 @@ service:
           path: "/var/log/ccp/keystone"
           type: host
           readOnly: False
+      lifecycle:
+        preStop:
+          exec:
+            command: ["apachectl", "-k", "graceful-stop"]
       pre:
         - name: chown-logs-dir
           command: "sudo /bin/chown keystone:keystone /var/log/ccp/keystone"

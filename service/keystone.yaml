@@ -27,7 +27,7 @@ service:
       lifecycle:
         preStop:
           exec:
-            command: ["apachectl", "-k", "graceful-stop"]
+            command: ["apachectl", "-k", "graceful"]
       pre:
         - name: chown-logs-dir
           command: "sudo /bin/chown keystone:keystone /var/log/ccp/keystone"

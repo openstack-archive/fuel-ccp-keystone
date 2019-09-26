@@ -1,1 +1,0 @@
-%microservices ALL=(root) NOPASSWD: /bin/chown keystone\:keystone /var/log/ccp/keystone, /bin/chown keystone\:keystone /etc/keystone/fernet-keys
